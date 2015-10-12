@@ -729,9 +729,7 @@ int target_examine(void)
 			continue;
 		}
 
-		retval = target_examine_one(target);
-		if (retval != ERROR_OK)
-			return retval;
+		target_examine_one(target);
 	}
 	return retval;
 }

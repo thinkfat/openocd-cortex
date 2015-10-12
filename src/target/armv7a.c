@@ -247,7 +247,6 @@ int armv7a_mmu_translate_va(struct target *target,  uint32_t va, uint32_t *val)
 		return ERROR_TARGET_TRANSLATION_FAULT;
 	}
 
-
 	if ((first_lvl_descriptor & 0x40002) == 2) {
 		/* section descriptor */
 		*val = (first_lvl_descriptor & 0xfff00000) | (va & 0x000fffff);

@@ -3022,6 +3022,7 @@ static int cortex_a_init_arch_info(struct target *target,
 	cortex_a->common_magic = CORTEX_A_COMMON_MAGIC;
 	/*  tap has no dap initialized */
 	if (!tap->dap) {
+		LOG_INFO("no tap dap");
 		armv7a->arm.dap = dap;
 		/* Setup struct cortex_a_common */
 
@@ -3036,8 +3037,10 @@ static int cortex_a_init_arch_info(struct target *target,
 		dap->tar_autoincr_block = (1 << 10);
 		dap->memaccess_tck = 80;
 		tap->dap = dap;
-	} else
+	} else {
+		LOG_INFO("using tap dap");
 		armv7a->arm.dap = tap->dap;
+	}
 
 	cortex_a->fast_reg_read = 0;
 
