@@ -1470,11 +1470,21 @@ static int cortex_a_set_breakpoint(struct target *target,
 				breakpoint->orig_instr);
 		if (retval != ERROR_OK)
 			return retval;
+
+		/* make sure data cache is cleaned & invalidated down to PoC */
+		armv7a_cache_flush_virt(target, breakpoint->address,
+					     breakpoint->length);
+
 		retval = target_write_memory(target,
 				breakpoint->address & 0xFFFFFFFE,
 				breakpoint->length, 1, code);
 		if (retval != ERROR_OK)
 			return retval;
+
+		/* update i-cache at breakpoint location */
+		armv7a_l1_i_cache_inval_virt(target, breakpoint->address,
+						 breakpoint->length);
+
 		breakpoint->set = 0x11;	/* Any nice value but 0 */
 	}
 
@@ -1694,6 +1704,11 @@ static int cortex_a_unset_breakpoint(struct target *target, struct breakpoint *b
 			return ERROR_OK;
 		}
 	} else {
+
+		/* make sure data cache is cleaned & invalidated down to PoC */
+		armv7a_cache_flush_virt(target, breakpoint->address,
+					     breakpoint->length);
+
 		/* restore original instruction (kept in target endianness) */
 		if (breakpoint->length == 4) {
 			retval = target_write_memory(target,
@@ -1708,6 +1723,10 @@ static int cortex_a_unset_breakpoint(struct target *target, struct breakpoint *b
 			if (retval != ERROR_OK)
 				return retval;
 		}
+
+		/* update i-cache at breakpoint location */
+		armv7a_l1_i_cache_inval_virt(target, breakpoint->address,
+						 breakpoint->length);
 	}
 	breakpoint->set = 0;
 
