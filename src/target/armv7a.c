@@ -681,7 +681,7 @@ int armv7a_init_arch_info(struct target *target, struct armv7a_common *armv7a)
 	armv7a->armv7a_mmu.armv7a_cache.info = -1;
 	armv7a->armv7a_mmu.armv7a_cache.outer_cache = NULL;
 	armv7a->armv7a_mmu.armv7a_cache.flush_all_data_cache = NULL;
-	armv7a->armv7a_mmu.armv7a_cache.auto_cache_enabled = 1;
+	armv7a->armv7a_mmu.armv7a_cache.auto_cache_enabled = 0;
 	return ERROR_OK;
 }
 
