@@ -79,6 +79,8 @@ struct cortex_a_common {
 	uint32_t cp15_control_reg;
 	/* latest cp15 register value written and cpsr processor mode */
 	uint32_t cp15_control_reg_curr;
+	/* auxiliary control reg */
+	uint32_t cp15_aux_control_reg;
 	enum arm_mode curr_mode;
 
 

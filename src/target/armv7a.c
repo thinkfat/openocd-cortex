@@ -726,10 +726,12 @@ int armv7a_arch_state(struct target *target)
 			state[armv7a->armv7a_mmu.armv7a_cache.d_u_cache_enabled],
 			state[armv7a->armv7a_mmu.armv7a_cache.i_cache_enabled]);
 	} else {
-		LOG_USER("MMU: %s, D-Cache: %s, I-Cache: %s",
+		LOG_USER("MMU: %s, D-Cache: %s, I-Cache: %s, L2-Cache: %s",
 			state[armv7a->armv7a_mmu.mmu_enabled],
 			state[armv7a->armv7a_mmu.armv7a_cache.d_u_cache_enabled],
-			state[armv7a->armv7a_mmu.armv7a_cache.i_cache_enabled]);
+			state[armv7a->armv7a_mmu.armv7a_cache.i_cache_enabled],
+			state[armv7a->armv7a_mmu.armv7a_cache.l2_cache_enabled]
+			);
 	}
 
 	if (arm->core_mode == ARM_MODE_ABT)

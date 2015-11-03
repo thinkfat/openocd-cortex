@@ -1332,6 +1332,21 @@ static int cortex_a_post_debug_entry(struct target *target)
 		(cortex_a->cp15_control_reg & 0x1000U) ? 1 : 0;
 	cortex_a->curr_mode = armv7a->arm.core_mode;
 
+	armv7a->arm.mrc(target, 15,
+			0, 1, 1, 0,
+			&cortex_a->cp15_aux_control_reg);
+
+	LOG_DEBUG("cp15_aux_control_reg: %8.8" PRIx32,
+			cortex_a->cp15_aux_control_reg);
+
+	if (((cortex_a->cpuid & CORTEX_A_MIDR_PARTNUM_MASK)
+		>> CORTEX_A_MIDR_PARTNUM_SHIFT) == CORTEX_A8_PARTNUM)
+	{
+		armv7a->armv7a_mmu.armv7a_cache.l2_cache_enabled =
+			armv7a->armv7a_mmu.armv7a_cache.d_u_cache_enabled
+			&& (cortex_a->cp15_aux_control_reg & 2);
+	}
+
 	return ERROR_OK;
 }
 
