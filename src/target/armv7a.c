@@ -536,11 +536,10 @@ static struct armv7a_cachesize decode_cache_reg(uint32_t cache_reg)
 	size.index_shift = (cache_reg & 0x7) + 4;
 	size.index = (cache_reg >> 13) & 0x7fff;
 	size.way = ((cache_reg >> 3) & 0x3ff);
-	size.way_shift = size.way + 1;
 
-	while (((size.way_shift >> i) & 1) != 1)
+	while (((size.way << i) & 0x80000000) == 0)
 		i++;
-	size.way_shift = 32-i;
+	size.way_shift = i;
 
 	return size;
 }
