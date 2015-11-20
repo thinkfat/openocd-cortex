@@ -1841,6 +1841,8 @@ static int cortex_a_unset_breakpoint(struct target *target, struct breakpoint *b
 		}
 
 		/* update i-cache at breakpoint location */
+		armv7a_l1_d_cache_inval_virt(target, breakpoint->address,
+						 breakpoint->length);
 		armv7a_l1_i_cache_inval_virt(target, breakpoint->address,
 						 breakpoint->length);
 	}
